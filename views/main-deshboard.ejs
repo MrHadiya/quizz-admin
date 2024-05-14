@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>deshboard</title>
+    <link rel="stylesheet" href="/css/all.min.css">
+    <link rel="stylesheet" href="/css/index.css">
+  </head>
+  <style>
+  </style>
+  <body>
+    <%- include('header') %>
+    <div class="row"> 
+      <div id="part-1">
+            <div class="list">
+               <div class="row combaine">
+                <i class="fa-solid fa-user"></i>
+                <p>Admin</p>
+               </div>
+              <div class="dropdown">
+                <div class="content">
+                  <h3 onclick="myFunction()" class="dropbtn">Deshboard</a></h3>
+                  <a href="/admin/deshboard"><i class="fa-solid fa-house"></i></a>
+                </div>
+                <div id="myDropdown" class="dropdown-content">
+                  <input type="text" placeholder="Search.." id="myInput" onkeyup="filterFunction()">
+                  
+                  <a href="/account-type/list">AccountType</a>
+                  <a href="/category/list">Category</a>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="container">
+
+        </div>
+    </div>
+  </body>
+  <script>
+    function myFunction() {
+  document.getElementById("myDropdown").classList.toggle("show");
+}
+
+function filterFunction() {
+  const input = document.getElementById("myInput");
+  const filter = input.value.toUpperCase();
+  const div = document.getElementById("myDropdown");
+  const a = div.getElementsByTagName("a");
+  for (let i = 0; i < a.length; i++) {
+    txtValue = a[i].textContent || a[i].innerText;
+    if (txtValue.toUpperCase().indexOf(filter) > -1) {
+      a[i].style.display = "";
+    } else {
+      a[i].style.display = "none";
+    }
+  }
+}
+  </script>
+</html>

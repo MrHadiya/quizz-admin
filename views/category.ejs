@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="/css/index.css">
+</head>
+<style>
+
+</style>
+<body>
+    <%- include('header') %>
+    <div class="row">
+        <div id="part-1">
+            <%- include('deshboard') %>
+     </div>
+ <div class="part-2">
+    <div class="container">
+        <table>
+            <tr>
+                <th>icon</th>
+                <th>Title</th>
+                <th>Description</th>
+            </tr>
+            <% category.forEach((item) => { %>
+            <tr>
+               <td><img src="/images/<%= item.icon %>" alt="icon" /></td>
+               <td><p><%= item.title %></p></td>
+               <td><p><%= item.description %></p></td>
+               <div id="id">
+                <p>ID: <%= item._id %></p>
+            </div>
+            </tr>
+            <% }); %>
+        </table>
+       </div>
+ </div>
+</body>
+</html>
