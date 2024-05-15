@@ -35,11 +35,12 @@ const store = multer.diskStorage({
 
   router.post("/account-type/add",upload,accountTypeControllers.addAccountType)
   router.get("/account-type/get",accountTypeControllers.accountTypeGet)
-  router.get("/account-type/update",upload,accountTypeControllers.accountTypeUpdate)
-  router.delete("/account-type/delete",accountTypeControllers.accountTypeDelete)
+  router.post("/account-type/update",upload,accountTypeControllers.accountTypeUpdate)
+  router.get("/account-type/delete",accountTypeControllers.accountTypeDelete)
   router.get("/admin/deshboard",accountTypeControllers.homeDeshboard)
   router.get("/account-type/list",accountTypeControllers.accountTypes)
   router.get("/account-type/edit",accountTypeControllers.accountEdit)
+  router.get("/account-type/add",accountTypeControllers.uiAdd)
 
 const categoryControllers=require("../controllers/category.controller")
 
