@@ -2,6 +2,7 @@ const AccountType = require("../models/accountType.model");
 const HTTP = require("../helper/http");
 const path = require("path");
 const fs = require("fs");
+const Fuse = require("fuse.js");
 
 const addAccountType = async (req, res) => {
   try {
@@ -12,21 +13,10 @@ const addAccountType = async (req, res) => {
       description: description,
     };
     const data = await AccountType.create(accountDetalis);
+    if (!data) return res.redirect("/account-type/add");
     return res.redirect("/account-type/list");
-    // return res.status(HTTP.SUCCESS).send({
-    //     status: true,
-    //     code: HTTP.SUCCESS,
-    //     message: "Add Successfully",
-    //     data: data,
-    //   });
   } catch (error) {
-    console.log(error);
-    return res.status(HTTP.BAD_REQUEST).send({
-      status: false,
-      code: HTTP.BAD_REQUEST,
-      error: "error",
-      data: {},
-    });
+    return res.redirect("/account-type/add");
   }
 };
 
@@ -56,7 +46,6 @@ const accountTypeGet = async (req, res) => {
 const accountTypeUpdate = async (req, res) => {
   try {
     const { account_type, description, _id } = req.body;
-
     const accountType = await AccountType.findById({ _id: _id });
     if (!accountType) {
       return res.status(HTTP.BAD_REQUEST).send({
@@ -78,15 +67,9 @@ const accountTypeUpdate = async (req, res) => {
       }
       updatedDetails.icon = req.file.filename;
     }
-    const updatedAccountType = await AccountType.findByIdAndUpdate(
-      _id,
-      updatedDetails,
-      { new: true }
-    );
+    await AccountType.findByIdAndUpdate(_id, updatedDetails, { new: true });
     return res.redirect("/account-type/list");
-   
   } catch (error) {
-    console.log(error);
     return res.status(HTTP.BAD_REQUEST).send({
       status: false,
       code: HTTP.BAD_REQUEST,
@@ -96,9 +79,7 @@ const accountTypeUpdate = async (req, res) => {
   }
 };
 const accountTypeDelete = async (req, res) => {
-
   try {
-    console.log("hello");
     const { accountType_id } = req.query;
     await AccountType.findByIdAndDelete({ _id: accountType_id });
     return res.status(HTTP.SUCCESS).send({
@@ -147,6 +128,30 @@ const uiAdd = async (req, res) => {
   res.render("accountadd");
 };
 
+const searchAccountType = async (req, res) => {
+  try {
+    console.log(req.query.search);
+    let data = await AccountType.find({
+      $or: [{ account_type: { $regex: req.query.search } }],
+    });
+    console.log(data,1);
+    return res.status(HTTP.SUCCESS).send({
+      status: true,
+      code: HTTP.SUCCESS,
+      message: "Successfully",
+      data: data,
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(HTTP.BAD_REQUEST).send({
+      status: false,
+      code: HTTP.BAD_REQUEST,
+      error: "error",
+      data: {},
+    });
+  }
+};
+
 module.exports = {
   addAccountType,
   accountTypeGet,
@@ -156,4 +161,5 @@ module.exports = {
   accountTypes,
   accountEdit,
   uiAdd,
+  searchAccountType,
 };

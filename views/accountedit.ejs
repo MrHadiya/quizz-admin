@@ -20,11 +20,13 @@
                 <input type="hidden" name="_id" value="<%= accounts._id %>">
                 <input type="file" name="icon" id="icon">
                 <label>Account Type</label>
-                <input type="text" name="account_type" id="accounttype" value="<%= accounts.account_type %>" placeholder="Enter your account type">
+                <input type="text" name="account_type" id="accounttype"  placeholder="Enter your account type">
                 <label>Description </label>
-                <input type="text" name="description" id="description"  value="<%= accounts.description %>" ><br><br>
+                <input type="text" name="description" id="description"  placeholder="Enter your description"><br><br>
                 <button type="submit" class="btn">Submit</button><br><br> 
-                <button type="submit" class="btn2"><a href="/account-type/list">Cancle</a></button><br><br> 
+                <div class="btn2-box">
+                    <button type="submit" class="btn2"><a href="/account-type/list">Cancle</a></button><br><br> 
+                </div>
             </form> 
 </body>
 </html>

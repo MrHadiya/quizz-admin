@@ -41,6 +41,7 @@ const store = multer.diskStorage({
   router.get("/account-type/list",accountTypeControllers.accountTypes)
   router.get("/account-type/edit",accountTypeControllers.accountEdit)
   router.get("/account-type/add",accountTypeControllers.uiAdd)
+  router.get("/account-type/search",accountTypeControllers.searchAccountType)
 
 const categoryControllers=require("../controllers/category.controller")
 

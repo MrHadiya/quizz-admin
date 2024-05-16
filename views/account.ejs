@@ -13,39 +13,54 @@
       <div id="part-1"><%- include('deshboard') %></div>
       <div class="part-2">
         <div class="container">
-          <table>
-            <tr>
-              <th>icon</th>
-              <th>Account Type</th>
-              <th>Description</th>
-              <th>Action</th>
-              <th>
-                <a href="/account-type/add"><i class="fa-solid fa-plus"></i></a>
-              </th>
-            </tr>
-            <% account.forEach((item) => { %>
-            <tr>
-              <td><img src="/images/<%= item.icon %>" alt="icon" /></td>
-              <td><p><%= item.account_type %></p></td>
-              <td><p><%= item.description %></p></td>
-              <div id="id">
-                <p>ID: <%= item._id %></p>
+          <div class="main-heading">
+            <h2>Account Type</h2>
+          </div>
+          <div class="text">
+            <div id="srch">
+              <i class="fa-solid fa-magnifying-glass"></i>
+              <input type="text" placeholder="Search" id="search" />
+            </div>
+            <div class="btn-account">
+              <button><a href="/account-type/add">Add Account Type</a></button>
+            </div>
+          </div>
+
+          <div class="main-table">
+            <table>
+              <tr>
+                <th>icon</th>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Action</th>
+              </tr>
+              <% account.forEach((item) => { %>
+              <div class="main-content">
+                <tr>
+                  <td><img src="/images/<%= item.icon %>" alt="icon" /></td>
+                  <td><p><%= item.account_type %></p></td>
+                  <td><p><%= item.description %></p></td>
+                  <div id="id">
+                    <p>ID: <%= item._id %></p>
+                  </div>
+                  <td class="box">
+                    <div class="edit-icon">
+                      <a
+                        href="/account-type/edit?accountType_id=<%= item._id %>"
+                        ><i class="fa-solid fa-pen-to-square"></i
+                      ></a>
+                      <a
+                        value="<%= item._id %>"
+                        onclick="hello('<%= item._id %>')"
+                        ><i class="fa-solid fa-trash"></i
+                      ></a>
+                    </div>
+                  </td>
+                </tr>
               </div>
-              <div class="icon-boxes">
-                <td id="edit">
-                  <a href="/account-type/edit?accountType_id=<%= item._id %>"
-                    ><i class="fa-solid fa-pen-to-square"></i
-                  ></a>
-                </td>
-                <td id="bin">
-                  <a value="<%= item._id %>" onclick="hello('<%= item._id %>')"
-                    ><i class="fa-solid fa-trash"></i
-                  ></a>
-                </td>
-              </div>
-            </tr>
-            <% }); %>
-          </table>
+              <% }); %>
+            </table>
+          </div>
         </div>
       </div>
     </div>
@@ -55,12 +70,25 @@
     function hello(recordId) {
       var base_url = window.location.origin;
       if (confirm("Are you sure you want to delete this plan?")) {
-        var instance = axios.create({ baseURL: base_url }); 
-        instance.get("/account-type/delete?accountType_id=" + recordId).then((response) => {
-          location.reload();
-        });
+        var instance = axios.create({ baseURL: base_url });
+        instance
+          .get("/account-type/delete?accountType_id=" + recordId)
+          .then((response) => {
+            location.reload();
+          });
       }
       return false;
     }
+
+    const search = (value) => {
+      // let value = document.getElementById("search").value;
+      fetch(`/account-type/search?query=${value}`)
+        .then((data) => data.json())
+        .then((res) => display(res));
+    };
+    document.getElementById("search").addEventListener("keypress",(e)=>{
+    let val=document.getElementById("search").value
+    if(e.key=="Enter")search(val)
+})
   </script>
 </html>
