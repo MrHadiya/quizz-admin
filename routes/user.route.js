@@ -1,5 +1,6 @@
 const Router = require("express");
 const router = Router();
+const {accountTypeValidation}=require("../middleware/auth")
 const multer=require("multer")
 
 const adminController=require("../controllers/user.controller")
@@ -33,7 +34,7 @@ const store = multer.diskStorage({
     storage: store,
   }).single("icon");
 
-  router.post("/account-type/add",upload,accountTypeControllers.addAccountType)
+  router.post("/account-type/add",upload,accountTypeValidation,accountTypeControllers.addAccountType)
   router.get("/account-type/get",accountTypeControllers.accountTypeGet)
   router.post("/account-type/update",upload,accountTypeControllers.accountTypeUpdate)
   router.get("/account-type/delete",accountTypeControllers.accountTypeDelete)
@@ -47,9 +48,12 @@ const categoryControllers=require("../controllers/category.controller")
 
 router.post("/catgory/add",upload,categoryControllers.addCategory)
 router.get("/category/get",categoryControllers.getCategory)
-router.put("/category/update",upload,categoryControllers.updateCategory)
+router.post("/category/update",upload,categoryControllers.updateCategory)
 router.delete("/category/delete",categoryControllers.categoryDelete)
 router.get("/category/list",categoryControllers.getCategoryList)
+router.get("/category/add",categoryControllers.categoryAddUi)
+router.get("/category/edit",categoryControllers.categoryEdit)
+
 
 
 const topicControllers=require("../controllers/topic.controller")

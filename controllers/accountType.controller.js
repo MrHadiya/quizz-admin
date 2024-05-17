@@ -23,10 +23,15 @@ const addAccountType = async (req, res) => {
 const accountTypeGet = async (req, res) => {
   try {
     const { accountType_id } = req.query;
+    // const { page, limit } = req.query;
+    let page=Number(req.query.page) || 1;
+    console.log(page);
+    let limit=Number(req.query.limit) || 5;
     if (accountType_id) {
       var data = await AccountType.findOne({ _id: accountType_id });
     } else {
-      var data = await AccountType.find();
+      var data = await AccountType.find().skip((page - 1) * limit)
+      .limit(limit)
     }
     return res.status(HTTP.SUCCESS).send({
       status: true,
@@ -110,6 +115,7 @@ const accountEdit = async (req, res) => {
   );
   res.render("accountedit", { accounts });
 };
+
 const accountTypes = async (req, res) => {
   try {
     let account = await AccountType.find();
@@ -134,7 +140,7 @@ const searchAccountType = async (req, res) => {
     let data = await AccountType.find({
       $or: [{ account_type: { $regex: req.query.search } }],
     });
-    console.log(data,1);
+    console.log(data);
     return res.status(HTTP.SUCCESS).send({
       status: true,
       code: HTTP.SUCCESS,

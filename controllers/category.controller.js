@@ -7,13 +7,6 @@ const addCategory = async (req, res) => {
   try {
     const { account_type_id, title, description, color_code, created_by } =
       req.body;
-
-    // function convertToParentDirectory(filePath) {
-    //     return path.dirname(filePath);
-    //   }
-    //   const filePath = __dirname;
-    //   const parentDirectory = convertToParentDirectory(filePath);
-
     const addCategory = {
       icon: req.file.filename,
       account_type_id: account_type_id,
@@ -23,20 +16,23 @@ const addCategory = async (req, res) => {
       created_by: created_by,
     };
     const data = await Category.create(addCategory);
-    return res.status(HTTP.SUCCESS).send({
-      status: true,
-      code: HTTP.SUCCESS,
-      message: "add Successfully",
-      data: data,
-    });
+    if (!data) return res.redirect("/category/add");
+    return res.redirect("/category/list");
+    // return res.status(HTTP.SUCCESS).send({
+    //   status: true,
+    //   code: HTTP.SUCCESS,
+    //   message: "add Successfully",
+    //   data: data,
+    // });
   } catch (error) {
-    console.log(error);
-    return res.status(HTTP.BAD_REQUEST).send({
-      status: false,
-      code: HTTP.BAD_REQUEST,
-      error: error,
-      data: {},
-    });
+    return res.redirect("/category/add");
+  //   console.log(error);
+  //   return res.status(HTTP.BAD_REQUEST).send({
+  //     status: false,
+  //     code: HTTP.BAD_REQUEST,
+  //     error: error,
+  //     data: {},
+  //   });
   }
 };
 
@@ -67,44 +63,35 @@ const getCategory = async (req, res) => {
 };
 const updateCategory = async (req, res) => {
   try {
-    const { title, description, color_code } = req.body;
-    const { category_id } = req.query;
-    function convertToParentDirectory(filePath) {
-      return path.dirname(filePath);
+    const { title, description, _id } = req.body;
+    const categorys = await Category.findById({ _id: _id });
+    if (!categorys) {
+      return res.status(HTTP.BAD_REQUEST).send({
+        status: false,
+        code: HTTP.BAD_REQUEST,
+        message: "category not found",
+      });
     }
-    const filePath = __dirname;
-    const parentDirectory = convertToParentDirectory(filePath);
-    const categoryDetalies = {
+    let updatedDetails = {
       title: title,
       description: description,
-      color_code: color_code,
     };
     if (req.file) {
-      categoryDetalies.icon = parentDirectory + "/" + req.file.path;
-      const imgUpdate = await Category.findById(category_id);
-      if (imgUpdate.icon) {
-        fs.unlinkSync(imgUpdate.icon);
+      if (categorys.icon) {
+        const oldFilePath = path.join(__dirname, "images", categorys.icon);
+        if (fs.existsSync(oldFilePath)) {
+          fs.unlinkSync(oldFilePath);
+        }
       }
+      updatedDetails.icon = req.file.filename;
     }
-    const updateData = await Category.findOneAndUpdate(
-      { _id: category_id },
-      categoryDetalies,
-      {
-        new: true,
-      }
-    );
-    return res.status(HTTP.SUCCESS).send({
-      status: true,
-      code: HTTP.SUCCESS,
-      mesaage: "Updated Successfully",
-      data: updateData,
-    });
+    await Category.findByIdAndUpdate(_id, updatedDetails, { new: true });
+    return res.redirect("/category/list");
   } catch (error) {
-    console.log(error);
     return res.status(HTTP.BAD_REQUEST).send({
       status: false,
       code: HTTP.BAD_REQUEST,
-      error: "error",
+      error: error,
       data: {},
     });
   }
@@ -144,6 +131,18 @@ const getCategoryList = async (req, res) => {
     });
   }
 };
+const categoryAddUi = async (req, res) => {
+  res.render("categoryadd");
+};
+const categoryEdit = async (req, res) => {
+  const { category_id } = req.query;
+  const categorys = await Category.findOneAndUpdate(
+    { _id: category_id },
+    req.body,
+    { new: true }
+  );
+  res.render("categoryedit", { categorys });
+};
 
 module.exports = {
   addCategory,
@@ -151,4 +150,6 @@ module.exports = {
   updateCategory,
   categoryDelete,
   getCategoryList,
+  categoryAddUi,
+  categoryEdit
 };

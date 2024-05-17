@@ -25,7 +25,6 @@
               <button><a href="/account-type/add">Add Account Type</a></button>
             </div>
           </div>
-
           <div class="main-table">
             <table>
               <tr>
@@ -34,11 +33,14 @@
                 <th>Description</th>
                 <th>Action</th>
               </tr>
+              <ul id="results">
               <% account.forEach((item) => { %>
               <div class="main-content">
                 <tr>
                   <td><img src="/images/<%= item.icon %>" alt="icon" /></td>
-                  <td><p><%= item.account_type %></p></td>
+                  <div>
+                    <td><p><%= item.account_type %></p></td>
+                  </div>
                   <td><p><%= item.description %></p></td>
                   <div id="id">
                     <p>ID: <%= item._id %></p>
@@ -59,12 +61,14 @@
                 </tr>
               </div>
               <% }); %>
+            <!-- </ul> -->
             </table>
           </div>
         </div>
       </div>
     </div>
   </body>
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
   <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
   <script>
     function hello(recordId) {
@@ -79,16 +83,51 @@
       }
       return false;
     }
+    async function search() {
+      const query = document.getElementById('search').value;
+      const response = await fetch(`/account-type/search?search=${query}`);
+      const result = await response.json();
+      
+      const resultContainer = document.getElementById('results');
+      resultContainer.innerHTML = ''; 
+      
+      if (result.status && result.data.length > 0) {
+        result.data.forEach(accountType => {
+          const listItem = document.createElement(`${accountType.account_type}`);
+          listItem.textContent = accountType.account_type;
+          resultContainer.appendChild(listItem);
+        });
+      } else {
+        resultContainer.innerHTML = '<p>No results found</p>';
+      }
+    }
 
-    const search = (value) => {
-      // let value = document.getElementById("search").value;
-      fetch(`/account-type/search?query=${value}`)
-        .then((data) => data.json())
-        .then((res) => display(res));
-    };
-    document.getElementById("search").addEventListener("keypress",(e)=>{
-    let val=document.getElementById("search").value
-    if(e.key=="Enter")search(val)
-})
+    document.addEventListener('DOMContentLoaded', () => {
+      const searchInput = document.getElementById('search');
+      searchInput.addEventListener('input', search);
+    });
+    // async function performSearch() {
+    //   const searchQuery = document.getElementById('search').value;
+    //   const response = await fetch(`/account-type/search?search=${searchQuery}`);
+    //   const result = await response.json();
+
+    //   const resultsContainer = document.getElementById('results');
+    //   resultsContainer.innerHTML = ''; 
+
+    //   if (result.status && result.data.length > 0) {
+    //     let resultHTML = '';
+    //     result.data.forEach(accountType => {
+    //       resultHTML += `<li>${accountType.account_type}</li>`;
+    //     });
+    //     resultContainer.innerHTML = resultHTML;
+    //   }
+    //   else {
+    //     resultContainer.innerHTML = '<p>No results found</p>';
+    //   }
+    // }
+    // document.addEventListener('DOMContentLoaded', () => {
+    //   const searchInput = document.getElementById('search');
+    //   searchInput.addEventListener('input', search);
+    // });
   </script>
 </html>
