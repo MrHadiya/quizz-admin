@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>topic</title>
+    <link rel="stylesheet" href="/css/index.css">
+</head>
+
+<body>
+    <%- include('header') %>
+    <div class="row">
+        <div id="part-1">
+            <%- include('deshboard') %>
+     </div>
+ <div class="part-2">
+    <div class="container">
+        <div class="main-heading">
+            <h2>Topics</h2>
+          </div>
+          <div class="text">
+            <div id="srch">
+              <i class="fa-solid fa-magnifying-glass"></i>
+              <input type="text" placeholder="Search" id="search" />
+            </div>
+            <div class="btn-account">
+              <button><a href="/topic/add">Add Topic</a></button>
+            </div>
+          </div>
+          <div class="main-table">
+        <table>
+            <tr>
+                <th>icon</th>
+                <th>Title</th>
+                <th>Description</th>
+                <th>Access</th>
+                <th>AccessCode</th>
+                <th>RegionalRelevance</th>
+                <th>Colorcode</th>
+                <th>SearchTags</th>
+                <th>Status</th>
+                <th>GameMode</th>
+                <th>MatchFormat</th>
+                <th>NumberOfQuestions</th>
+                <th>TimeForQuestion</th>
+                <th>LearningPoint</th>
+                <th>ExperiencePoint</th>
+                <th>Action</th>
+            </tr>
+            <% topic.forEach((item) => { %>
+            <tr>
+               <td><img src="/images/<%= item.icon %>" alt="icon" /></td>
+               <td><p><%= item.name %></p></td>
+               <td><p><%= item.description %></p></td>
+               <td><p><%= item.access %></p></td>
+               <td><p><%= item.access_code %></p></td>
+               <td><p><%= item.regional_relevance %></p></td>
+               <td><p><%= item.color_code %></p></td>
+               <td><p><%= item.search_tags %></p></td>
+               <td><button><%= item.status %></button></td>
+               <td><p><%= item.game_mode %></p></td>
+               <td><p><%= item.match_format %></p></td>
+               <td><p><%= item.number_of_questions %></p></td>
+               <td><p><%= item.time_for_question %></p></td>
+               <td><p><%= item.learning_point %></p></td>
+               <td><p><%= item.experience_point %></p></td>
+               <div id="id">
+                <p>ID: <%= item._id %></p>
+            </div>
+            <td class="box">
+                <div class="edit-icon">
+                  <a
+                    href="/topic/edit?topic_id=<%= item._id %>"
+                    ><i class="fa-solid fa-pen-to-square"></i
+                  ></a>
+                  <a
+                    value="<%= item._id %>"
+                    onclick="hello('<%= item._id %>')"
+                    ><i class="fa-solid fa-trash"></i
+                  ></a>
+                </div>
+              </td>
+            </tr>
+            <% }); %>
+        </table>
+          </div>
+       </div>
+ </div>
+</body>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script>
+      function hello(recordId) {
+      var base_url = window.location.origin;
+      if (confirm("Are you sure you want to delete this plan?")) {
+        var instance = axios.create({ baseURL: base_url });
+        instance
+          .get("/topic/delete?topic_id=" + recordId)
+          .then((response) => {
+            location.reload();
+          });
+      }
+      return false;
+    }
+</script>
+</html>

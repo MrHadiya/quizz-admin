@@ -1,0 +1,46 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Topic</title>
+    <link rel="stylesheet" href="/css/index.css">
+<body>  
+            <form  action="/topic/add" method="post" id="form" enctype="multipart/form-data">
+                <h2>ADD TOPIC</h2>
+                <label>icon</label>
+                <input type="file" name="icon" id="icon">
+                <label>Name</label>
+                <input type="text" name="name" id="name" placeholder="Enter your name">
+                <label>Description </label>
+                <input type="text" name="description" id="description"  placeholder="Enter your description"><br><br>
+                <label>Access</label>
+                <input type="text" name="access" id="access" placeholder="Enter your access">
+                <label>Access_code</label>
+                <input type="text" name="access_code" id="access_code" placeholder="Enter your accesscode">
+                <label>RegionalRelevance</label>
+                <input type="text" name="regional_relevance" id="regional_relevance" placeholder="Enter your regionalrelevance">
+                <label>Searchtags</label>
+                <input type="text" name="search_tags" id="search_tags" placeholder="Enter your searchtags">
+                <label>Colorcode</label>
+                <input type="text" name="color_code" id="color_code" placeholder="Enter your colorcode">
+                <label>Gamemode</label>
+                <input type="text" name="game_mode" id="game_mode" placeholder="Enter your gamemode">
+                <label>Matchformat</label>
+                <input type="text" name="match_format" id="match_format" placeholder="Enter your matchformat">
+                <label>Numberofquestions</label>
+                <input type="text" name="number_of_questions" id="number_of_questions" placeholder="Enter your numberofquestions">
+                <label>Timeforquestion</label>
+                <input type="text" name="time_for_question" id="time_for_question" placeholder="Enter your timeforquestion">
+                <label>Learningpoint</label>
+                <input type="text" name="learning_point" id="learning_point" placeholder="Enter your learningpoint">
+                <label>experience_point</label>
+                <input type="text" name="experience_point" id="experience_point" placeholder="Enter your experiencepoint">
+                <button type="submit" class="btn">Submit</button><br><br> 
+                <div class="btn2-box">
+                    <button type="submit" class="btn2"><a href="/topic/list">Cancle</a></button><br><br> 
+                </div>
+            </form> 
+</body>
+</html>

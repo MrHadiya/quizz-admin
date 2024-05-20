@@ -291,6 +291,8 @@ form .main-box {
   display: none;
 }
 .main-table {
+
+  width: 100%;
   background-color: #f2f2f2;
   box-shadow: 0px 0px 30px rgba(97, 95, 95, 0.2);
   border-radius: 15px;
@@ -299,7 +301,7 @@ form .main-box {
 }
 table {
   width: 800px;
-  height: 200px;
+  height: 100px;
   border-collapse: collapse;
 }
 th,
@@ -322,6 +324,13 @@ th {
   font-weight: 500;
   height: 50px;
   text-align: left;
+}
+td button{
+  background-color: green;
+  border: none;
+  font-size: 20px;
+  padding: 5px 25px;
+  color: white;
 }
 #edit {
   display: flex;
@@ -368,6 +377,7 @@ th {
   font-family: sans-serif;
 }
 .part-2 {
+  width: 100%;
   padding: 25px;
   margin-top: 20px;
   box-shadow: 0px 0px 30px rgba(97, 95, 95, 0.2);

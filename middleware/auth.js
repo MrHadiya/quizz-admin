@@ -29,6 +29,30 @@ const accountTypeValidation=[
     }
   ]
 
+  const categoryValidation=[
+    body('description').trim().isString().withMessage('description must be a string'),
+    body('title').trim().isString().withMessage('name must be a string')
+    .isLength({ min: 3 }).withMessage('name must be at least 3 characters long')
+    .custom(async (value) => {
+      const accounts= await AccountType.findOne({ account_type: value });
+      if (accounts) {
+        throw new Error('name already exists');
+      }
+   }),
+  (req, res,next) => {
+      const error = validationResult(req);
+      if (!error.isEmpty()) {
+        return res.status(HTTP.SUCCESS).send({
+          status: true,
+          code: HTTP.SUCCESS,
+          message: "validaton error",
+          error: error.array()[0].msg,
+        });
+      }
+      next()
+    }
+  ]
+
 const hasRole = (user, roles) => {
     if (roles && roles.length) {
         return [].includes(user.role)
@@ -71,4 +95,4 @@ exports.authenticateJWT = function (roles, force = true) {
     };
 };
 
-module.exports={accountTypeValidation}
+module.exports={accountTypeValidation,categoryValidation}
